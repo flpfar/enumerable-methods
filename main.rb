@@ -53,6 +53,35 @@ module Enumerable
     end
     false
   end
+
+  def my_none?(arg = nil)
+    if block_given? && arg.nil?
+      my_each { |n| return false if yield(n) }
+    elsif arg.nil?
+      my_each { |n| return false if n }
+    elsif arg.is_a?(Regexp)
+      my_each { |n| return false if arg.match(n) }
+    elsif arg.is_a?(Integer) || arg.is_a?(String)
+      my_each { |n| return false if n == arg }
+    else
+      my_each { |n| return false if n.is_a?(arg) }
+    end
+    true
+  end
+
+  def my_count(arg = nil)
+    count = 0
+    if block_given? && arg.nil?
+      my_each { |n| count += 1 if yield(n) }
+    elsif arg.nil?
+      my_each { |n| count += 1 if n }
+    elsif arg.is_a?(Integer) || arg.is_a?(String)
+      my_each { |n| count += 1 if n == arg }
+    else
+      my_each { |n| count += 1 if n.is_a?(arg) }
+    end
+    count
+  end
 end
 
 # rubocop:enable all
