@@ -19,4 +19,15 @@ module Enumerable
       yield object[n], n
     end
   end
+
+  def my_select
+    return to_enum unless block_given?
+
+    array = []
+    object = self
+    object.my_each do |n|
+      array.push(n) if yield(n)
+    end
+    array
+  end
 end
