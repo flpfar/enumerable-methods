@@ -82,6 +82,14 @@ module Enumerable
     end
     count
   end
+
+  def my_map
+    return to_enum unless block_given?
+
+    obj = to_a
+    obj.size.times { |n| obj[n] = yield obj[n] }
+    obj
+  end
 end
 
 # rubocop:enable all
