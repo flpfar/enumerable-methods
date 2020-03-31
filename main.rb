@@ -5,29 +5,20 @@ module Enumerable
   def my_each
     return to_enum unless block_given?
 
-    object = self
-    object.size.times do |n|
-      yield object[n]
-    end
+    size.times { |n| yield self[n] }
   end
 
   def my_each_with_index
     return to_enum unless block_given?
 
-    object = self
-    object.size.times do |n|
-      yield object[n], n
-    end
+    size.times { |n| yield self[n], n }
   end
 
   def my_select
     return to_enum unless block_given?
 
     array = []
-    object = self
-    object.my_each do |n|
-      array.push(n) if yield(n)
-    end
+    my_each { |n| array.push(n) if yield(n) }
     array
   end
 end
