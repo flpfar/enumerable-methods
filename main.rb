@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/MethodLength, Metrics/AbcSize
+# rubocop:disable Layout/LineLength
 
 # Adding methods to Enumerable module
 module Enumerable
@@ -87,8 +88,26 @@ module Enumerable
     return to_enum unless block_given?
 
     obj = to_a
-    obj.size.times { |n| obj[n] = yield obj[n] }
+    obj.size.times { |n| obj[n] = yield(obj[n]) }
     obj
+  end
+
+  def my_inject(initial = 0, arg = nil)
+    obj = to_a
+    memo = obj[0]
+
+    if initial.is_a?(Symbol)
+      arg = initial
+      initial = 0
+      initial, memo = 1 if arg == :/ || arg == :* && initial.zero?
+    end
+
+    unless arg.nil?
+      memo = (my_inject { |oper, n| oper.public_send(arg, n) }).public_send(arg, initial)
+    end
+
+    (obj.size - 1).times { |n| memo = yield(memo, obj[n + 1]) } if block_given? && arg.nil?
+    memo
   end
 end
 
