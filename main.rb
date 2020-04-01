@@ -100,13 +100,16 @@ module Enumerable
       initial, memo = 1 if arg == :/ || arg == :* && initial.zero?
     end
 
-    unless arg.nil?
-      memo = (my_inject { |oper, n| oper.public_send(arg, n) })
-      memo = memo.public_send(arg, initial)
+    memo = (my_inject { |oper, n| oper.public_send(arg, n) }).public_send(arg, initial) unless arg.nil?
+
+    if block_given?
+      if initial.zero?
+        (obj.size - 1).times { |n| memo = yield(memo, obj[n + 1]) }
+      else
+        obj.size.times { |n| initial = yield(initial, obj[n]) }
+        memo = initial
+      end
     end
-
-    (obj.size - 1).times { |n| memo = yield(memo, obj[n + 1]) } if block_given? && arg.nil?
-
     memo
   end
 
