@@ -3,7 +3,7 @@
 # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/MethodLength, Metrics/AbcSize
 # rubocop:disable Layout/LineLength
 
-# Adding methods to Enumerable module
+# Adding my_methods to Enumerable module
 module Enumerable
   def my_each
     return to_enum unless block_given?
@@ -84,11 +84,12 @@ module Enumerable
     count
   end
 
-  def my_map
-    return to_enum unless block_given?
+  def my_map(proc = nil, &block)
+    return to_enum unless proc || block
 
+    proc = block if block
     obj = to_a
-    obj.size.times { |n| obj[n] = yield(obj[n]) }
+    obj.size.times { |n| obj[n] = proc.call(obj[n]) }
     obj
   end
 
@@ -109,6 +110,12 @@ module Enumerable
     (obj.size - 1).times { |n| memo = yield(memo, obj[n + 1]) } if block_given? && arg.nil?
     memo
   end
+
+  def multiply_els(array)
+    array.my_inject(:*)
+  end
 end
+
+
 
 # rubocop:enable all
