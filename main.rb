@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/MethodLength, Metrics/AbcSize
-# rubocop:disable Layout/LineLength
 
 # Adding my_methods to Enumerable module
 module Enumerable
@@ -104,10 +103,14 @@ module Enumerable
     end
 
     unless arg.nil?
-      memo = (my_inject { |oper, n| oper.public_send(arg, n) }).public_send(arg, initial)
+      memo = (my_inject { |oper, n| oper.public_send(arg, n) })
+      memo = memo.public_send(arg, initial)
     end
 
-    (obj.size - 1).times { |n| memo = yield(memo, obj[n + 1]) } if block_given? && arg.nil?
+    if block_given? && arg.nil?
+      (obj.size - 1).times { |n| memo = yield(memo, obj[n + 1]) }
+    end
+
     memo
   end
 
@@ -115,7 +118,5 @@ module Enumerable
     array.my_inject(:*)
   end
 end
-
-
 
 # rubocop:enable all
