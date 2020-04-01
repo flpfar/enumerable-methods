@@ -27,7 +27,7 @@ The rewritten Enumerable methods are:
 - Clone this repository to your local machine or download the files.
 
 ### Usage
-- Navigate to the project folder and run the main.tb file, using: ruby main.rb
+- Navigate to the project folder and run the main.rb file, using: ruby main.rb
 - To run the methods created here, you must call them from main.rb or create a new file with its purpose.
 
 ## 👤 Author 
