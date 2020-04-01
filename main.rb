@@ -1,6 +1,4 @@
-# frozen_string_literal: true
-
-# rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/MethodLength, Metrics/AbcSize
+# rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
 # Adding my_methods to Enumerable module
 module Enumerable
@@ -107,9 +105,7 @@ module Enumerable
       memo = memo.public_send(arg, initial)
     end
 
-    if block_given? && arg.nil?
-      (obj.size - 1).times { |n| memo = yield(memo, obj[n + 1]) }
-    end
+    (obj.size - 1).times { |n| memo = yield(memo, obj[n + 1]) } if block_given? && arg.nil?
 
     memo
   end
