@@ -112,10 +112,10 @@ module Enumerable
     end
     memo
   end
+end
 
-  def multiply_els(array)
-    array.my_inject(:*)
-  end
+def multiply_els(array)
+  array.my_inject(:*)
 end
 
 # rubocop:enable all
