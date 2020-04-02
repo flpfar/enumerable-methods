@@ -37,13 +37,13 @@ module Enumerable
     true
   end
 
-  def my_any?(arg = nil)
+  def my_any?(arg = nil, &block)
     if arg.is_a?(Regexp)
       my_each { |n| return true if arg.match(n) }
     elsif arg.is_a?(Integer) || arg.is_a?(String)
       my_each { |n| return true if n == arg }
     elsif block_given?
-      my_each { |n| return true if yield(n) }
+      my_each { |n| return true if block.call(n) }
     elsif arg.nil?
       my_each { |n| return true if n }
     else
@@ -52,19 +52,8 @@ module Enumerable
     false
   end
 
-  def my_none?(arg = nil)
-    if arg.is_a?(Regexp)
-      my_each { |n| return false if arg.match(n) }
-    elsif arg.is_a?(Integer) || arg.is_a?(String)
-      my_each { |n| return false if n == arg }
-    elsif block_given?
-      my_each { |n| return false if yield(n) }
-    elsif arg.nil?
-      my_each { |n| return false if n }
-    else
-      my_each { |n| return false if n.is_a?(arg) }
-    end
-    true
+  def my_none?(arg = nil, &block)
+    !my_any?(arg, &block)
   end
 
   def my_count(arg = nil)
