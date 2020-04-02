@@ -84,7 +84,7 @@ module Enumerable
   def my_map(proc = nil, &block)
     return to_enum unless proc || block
 
-    proc = block if block
+    proc = block if block && !proc
     obj = to_a
     obj.size.times { |n| obj[n] = proc.call(obj[n]) }
     obj
@@ -114,8 +114,10 @@ module Enumerable
   end
 end
 
-def multiply_els(array)
-  array.my_inject(:*)
+module TestEnumerable
+  def multiply_els(array)
+    array.my_inject(:*)
+  end
 end
 
 # rubocop:enable all
